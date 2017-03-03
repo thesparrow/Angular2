@@ -1,0 +1,9 @@
+#computer memory storage
+.DS_Store
+
+#log files 
+*.log
+*.logs 
+
+#modules 
+node_modules
