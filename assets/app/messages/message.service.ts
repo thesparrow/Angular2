@@ -12,8 +12,9 @@ import { Message } from "./message.model";
 
 export class MessageService {
 	private messages: Message[] = [];
+	messageIsEdit = new EventEmitter<Message>();
 
-	//event e
+	//event emitter 
 	constructor(private http: Http) {}
 
 	//messages will be added to array 
@@ -48,9 +49,9 @@ export class MessageService {
 			.catch((error: Response) => Observable.throw(error.json()));		
 	}
 
-	//load the message-input component into the html template
-	editMessage(){
-
+	//place message in the top most edit box
+	editMessage(message: Message){
+		this.messageIsEdit.emit(message); 
 	}
 
 	deleteMessage(message: Message){

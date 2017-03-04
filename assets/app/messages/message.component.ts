@@ -25,13 +25,12 @@ import { MessageService } from "./message.service";
 export class MessageComponent {
 	//pass arguments to have access from the outside 
 	@Input() message: Message; 
-	@Output() editClicked = new EventEmitter<string>(); //generic type - classes can use multiple types
 
     constructor(private messageService: MessageService) {}  
-    
+   
     onEdit() {
-		this.editClicked.emit('A new value');
-	}
+        this.messageService.editMessage(this.message);
+    }
 
     onDelete() { 
         this.messageService.deleteMessage(this.message);
