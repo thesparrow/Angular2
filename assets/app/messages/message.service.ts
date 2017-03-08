@@ -54,7 +54,23 @@ export class MessageService {
 		this.messageIsEdit.emit(message); 
 	}
 
+	updateMessage(message: Message){
+		//reach out to the server to reach out to the 
+		const body = JSON.stringify(message);
+        const headers = new Headers({'Content-Type': 'application/json'});
+        return this.http.patch('http://localhost:3000/message/' + message.messageId, body, {headers: headers})
+            .map((response: Response) => response.json())
+            .catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	deleteMessage(message: Message){
+		console.log("Delete " + message.content); 
 		this.messages.splice(this.messages.indexOf(message), 1);
+		this.messages.forEach(function(m){
+			console.log(" message "+ m.content); 
+		 }); 
+		return this.http.delete('http://localhost:3000/message/' + message.messageId)
+            .map((response: Response) => response.json())
+            .catch((error: Response) => Observable.throw(error.json()));
 	}
 } 

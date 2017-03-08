@@ -16,16 +16,35 @@ export class MessageInputComponent implements OnInit {
 	//dependency injection 
 	constructor(private messageService: MessageService) {}
 
+	//submission of form
 	onSubmit(form: NgForm){
-		const message = new Message(form.value.content, 'Anna'); 
-		this.messageService.addMessages(message)
+		if(this.message){
+			//edit message
+			this.message.content = form.value.content; 
+			this.messageService.updateMessage(this.message)
+                .subscribe(
+                    result => console.log(result)
+                );
+
+			this.message = null; 
+
+		} else {
+			const message = new Message(form.value.content, 'Anna'); 
+			this.messageService.addMessages(message)
 			.subscribe(
 					data => console.log(data),
 					error => console.error(error)
 				); 
-		form.resetForm(); 
+			form.resetForm();
+		}		 
 	}
 	
+	//clear form 
+	onClear(form: NgForm) {
+		this.message = null; 
+		form.resetForm();
+	}
+
 	ngOnInit(){
 		this.messageService.messageIsEdit.subscribe(
 			(message: Message) => this.message = message
