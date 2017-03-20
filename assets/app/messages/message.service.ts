@@ -19,14 +19,18 @@ export class MessageService {
 
 	//messages will be added to array 
 	addMessages(message: Message){
-		this.messages.push(message);
 		//use http service to push to server 
 		const body = JSON.stringify(message); 
 		//include headers in this request 
 		const headers = new Headers({'Content-Type': 'application/json'});
 		//this sends an observable 
 		return this.http.post('http://localhost:3000/message', body, {headers: headers})
-			.map((response: Response) => response.json())
+			.map((response: Response) => {
+				const result = response.json();
+				const message = new Message(result.obj.content, 'Dummy', result.obj._id, null); 
+				this.messages.push(message);
+				return message; 
+			})		
 			.catch((error: Response) => Observable.throw(error.json()));
 			//give the data that was attached to the response 
 
@@ -41,7 +45,7 @@ export class MessageService {
 				let transformedMessages: Message[] = [];
 				for (let message of messages){
 					transformedMessages.push(new Message(
-						message.content, 'Dummy', message.id, null));
+						message.content, 'Dummy', message._id, null));
 				}
 				this.messages = transformedMessages; 
 				return transformedMessages;
@@ -57,10 +61,10 @@ export class MessageService {
 	updateMessage(message: Message){
 		//reach out to the server to reach out to the 
 		const body = JSON.stringify(message);
-        const headers = new Headers({'Content-Type': 'application/json'});
-        return this.http.patch('http://localhost:3000/message/' + message.messageId, body, {headers: headers})
-            .map((response: Response) => response.json())
-            .catch((error: Response) => Observable.throw(error.json()));
+		const headers = new Headers({'Content-Type': 'application/json'});
+		return this.http.patch('http://localhost:3000/message/' + message.messageId, body, {headers: headers})
+			.map((response: Response ) => response.json())
+			.catch((error: Response) => Observable.throw(error.json())); 
 	}
 
 	deleteMessage(message: Message){

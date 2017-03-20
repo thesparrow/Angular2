@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit} from "@angular/core";
 
 import { Message } from "./message.model"; 
 import { MessageService } from "./message.service"; 
@@ -33,6 +33,9 @@ export class MessageComponent {
     }
 
     onDelete() { 
-        this.messageService.deleteMessage(this.message);
+        this.messageService.deleteMessage(this.message)
+			 .subscribe(
+                    result => console.log(result)
+            );
     }
-}
+}		

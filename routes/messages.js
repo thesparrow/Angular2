@@ -45,4 +45,71 @@ router.post('/', function (req, res, next) {
 	})
 });
 
+
+//update existing messages in the storage 
+router.patch('/:id', function(req, res, next){
+	//the id is passed as a parameter
+
+	Message.findById(req.params.id, function(err, message){
+		if(err){
+			return res.status(500).json({
+					title: 'An error occured',
+					error: err
+			}); 
+		}
+		if(!message){
+			return res.status(500).json({
+					title: 'Message was not updated.',
+					error:  {message: "Message not found "}
+			}); 	
+		}
+		message.content = req.body.content; 
+		console.log(message.content);
+
+		message.save(function(err,result){
+			if(err){
+				return res.status(500).json({
+                    title: 'An error occurred',
+                    error: err
+                });
+			}
+			res.status(200).json({
+				message: "Updated message",
+				obj: result
+			}); 
+		}); 
+	});
+});
+
+//DELETE resource based on id
+router.delete('/:id', function(req,res,next){
+	Message.findById(req.params.id, function(err, message){
+		if(err){
+			return res.status(500).json({
+					title: 'An error occured',
+					error: err
+			}); 
+		}
+		if(!message){
+			return res.status(500).json({
+					title: 'No Message Found!',
+					error:  {message: "Message not found "}
+			}); 	
+		}		
+
+		message.remove(function(err,result){
+			if(err){
+				return res.status(500).json({
+                    title: 'An error occurred',
+                    error: err
+                });
+			}
+			res.status(200).json({
+				message: "Message has been removed",
+				obj: result
+			}); 
+		}); 
+	});
+}); 
+
 module.exports = router;
