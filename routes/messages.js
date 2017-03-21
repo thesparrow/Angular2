@@ -7,6 +7,7 @@ var router = express.Router();
 var Message = require('../models/message');
 
 //get messages 
+//TO DO: remove 
 router.get('/', function(req, res, next){
 	Message.find()
 		.exec(function(err, messages){

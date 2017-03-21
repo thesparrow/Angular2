@@ -13,18 +13,18 @@ var messageRoutes = require('./routes/messages');
 var userRoutes = require('./routes/user');
 
 var app = express();
-mongoose.connect('localhost:27017/node-angular'); 
+mongoose.connect('localhost:27017/node-angular');
 
 
 //seed db 
 
-    var user = new User({
-        firstName: 'Max',
-        lastName: 'Schwarz',
-        password: 'super-secret',
-        email: 'Max@gmail.com'
-    });
-    user.save();
+var user = new User({
+    firstName: 'Max',
+    lastName: 'Schwarz',
+    password: 'super-secret',
+    email: 'Max@gmail.com'
+});
+user.save();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,7 +34,7 @@ app.set('view engine', 'hbs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -50,6 +50,7 @@ app.use(function (req, res, next) {
 
 //forward to the routes 
 app.use('/message', messageRoutes);
+app.use('/user', userRoutes);
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler
