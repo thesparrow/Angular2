@@ -4,7 +4,9 @@ var bcrypty = require('bcryptjs');
 
 var User = require('../models/user');
 
-//create a user 
+var jwt = require('jsonwebtoken'); 
+
+//Sign up user
 router.post('/', function (req, res, next) {
     var user = new User({
         firstName: req.body.firstName,
@@ -24,6 +26,42 @@ router.post('/', function (req, res, next) {
             message: 'User created',
             obj: result
         });
+    });
+});
+
+//Sign in user 
+router.post('/signin', function (req, res, next) {
+    //find user based on email
+    User.findOne({ email: req.body.email }, function (err, user) {
+        if (err) {
+            return res.status(500).json({
+                title: 'Error has occured in signIn',
+                error: err
+            });
+        }
+        if (!user) { //401 unauthorized
+            return res.status(401).json({
+                title: 'Login failed',
+                error: { message: 'Invalid login credentials' }
+            });
+        }
+
+        //compare passwords
+        bcrypty.compareSync(req.body.password, user.password, function (err, match) {
+            if (err) {
+                return res.status(401).json({
+                    title: 'Login failed',
+                    error: { message: 'Invalid login credentials' }
+                });
+            }
+        });
+
+        var token = jwt.sign({user: user}, 'secret', {expiresIn: 7200});
+        res.status(200).json({
+            message: 'Login successful',
+            token: token,
+            userId: user._id
+        })
     });
 });
 
