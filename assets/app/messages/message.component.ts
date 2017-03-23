@@ -1,7 +1,7 @@
-import { Component, Input, OnInit} from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 
-import { Message } from "./message.model"; 
-import { MessageService } from "./message.service"; 
+import { Message } from "./message.model";
+import { MessageService } from "./message.service";
 
 @Component({
 	selector: 'app-message',
@@ -24,18 +24,18 @@ import { MessageService } from "./message.service";
 
 export class MessageComponent {
 	//pass arguments to have access from the outside 
-	@Input() message: Message; 
+	@Input() message: Message;
 
-    constructor(private messageService: MessageService) {}  
-   
-    onEdit() {
-        this.messageService.editMessage(this.message);
-    }
+	constructor(private messageService: MessageService) { }
 
-    onDelete() { 
-        this.messageService.deleteMessage(this.message)
-			 .subscribe(
-                    result => console.log(result)
-            );
-    }
+	onEdit() {
+		this.messageService.editMessage(this.message);
+	}
+
+	onDelete() {
+		this.messageService.deleteMessage(this.message)
+			.subscribe(
+			result => console.log(result)
+			);
+	}
 }		

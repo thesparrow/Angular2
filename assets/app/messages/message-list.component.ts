@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core"; 
+import { Component, OnInit } from "@angular/core";
 
-import { Message } from "./message.model"; 
-import { MessageService } from "./message.service"; 
+import { Message } from "./message.model";
+import { MessageService } from "./message.service";
 
 @Component({
 	selector: 'app-message-list',
@@ -13,21 +13,21 @@ import { MessageService } from "./message.service";
 			</app-message>
 		</div>
 	`
-}) 
+})
 
 export class MessageListComponent implements OnInit {
-    messages: Message[]; 
+	messages: Message[];
 
-    constructor(private messageServices: MessageService){}
+	constructor(private messageServices: MessageService) { }
 
-    //life cycle hook 
-    ngOnInit(){
-    	this.messageServices.getMessages()
-    	//create an observable
-    		.subscribe(
-    			(messages: Message[]) => {
-    				this.messages = messages; 
-    				}	
-    			); 
-    }
+	//life cycle hook 
+	ngOnInit() {
+		this.messageServices.getMessages()
+			//create an observable
+			.subscribe(
+			(messages: Message[]) => {
+				this.messages = messages;
+			}
+			);
+	}
 }

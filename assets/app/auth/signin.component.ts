@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { AuthService } from './auth.service';
+import { AuthService } from "./auth.service";
+import { User } from './user.model';
 
 @Component({
 	selector: 'app-signin',
@@ -13,17 +14,16 @@ export class SigninComponent {
 	constructor(private authService: AuthService) { }
 
 	onSubmit() {
-		console.log(this.myForm);
 		this.myForm.reset();
 	}
 
 	ngOnInit() {
 		this.myForm = new FormGroup({
-			email: new FormControl('', [
-				Validators.required,
-				Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
-			]),
-			password: new FormControl('', Validators.required)
+			email: new FormControl(null, [
+                Validators.required
+                //Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+            ]),
+            password: new FormControl(null, Validators.required)
 		});
 	}
 }

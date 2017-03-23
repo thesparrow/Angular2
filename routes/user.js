@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var express = require('bcryptjs');
+var bcrypty = require('bcryptjs');
 
 var User = require('../models/user');
 
 //create a user 
-router.get('/', function (req, res, next) {
+router.post('/', function (req, res, next) {
     var user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -20,19 +20,11 @@ router.get('/', function (req, res, next) {
                 error: err
             });
         }
-        if (!result) {
-            return res.status(500).json({
-                title: 'No Message Found!',
-                error: { message: "Message not found " }
-            });
-        }
-
-        res.stauts(201).json({
+        res.status(201).json({
             message: 'User created',
             obj: result
         });
     });
-
 });
 
 module.exports = router; 
