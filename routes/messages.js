@@ -6,8 +6,9 @@ var router = express.Router();
 
 var Message = require('../models/message');
 
+var jwt = require('jsonwebtoken');
+
 //get messages 
-//TO DO: remove 
 router.get('/', function(req, res, next){
 	Message.find()
 		.exec(function(err, messages){
@@ -23,6 +24,21 @@ router.get('/', function(req, res, next){
 			});
 		});		
 }); 
+
+//allow only authenticated users
+//the token is passed in the query parameters url  
+router.use('/', function(req, res, next) {
+	jwt.verify(req.query.token, 'secret', function(err,decoded){
+		if(err){
+			return res.status(401).json({
+					title: "Not Authenticated",
+					error: err
+			});
+		}
+		next(); //allow the flow to continue 
+	}); 
+});
+
 //store messages 
 router.post('/', function (req, res, next) {
 	var message = new Message({
