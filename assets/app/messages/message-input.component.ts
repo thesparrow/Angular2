@@ -8,46 +8,47 @@ import { Message } from "./message.model";
 @Component({
 	selector: 'app-message-input',
 	templateUrl: './message-input.component.html'
-}) 
+})
 
-export class MessageInputComponent implements OnInit { 
-	message: Message; 
+export class MessageInputComponent implements OnInit {
+	message: Message;
 
 	//dependency injection 
-	constructor(private messageService: MessageService) {}
+	constructor(private messageService: MessageService) { }
 
 	//submission of form
-	onSubmit(form: NgForm){
-		if(this.message){
+	onSubmit(form: NgForm) {
+		if (this.message) {
 			//edit message
-			this.message.content = form.value.content; 
+			this.message.content = form.value.content;
 			this.messageService.updateMessage(this.message)
-                .subscribe(
-                    result => console.log(result)
-                );
+				.subscribe(
+				result => console.log(result)
+				);
 
-			this.message = null; 
+			this.message = null;
 
 		} else {
-			const message = new Message(form.value.content, 'Anna'); 
+			const message = new Message(form.value.content, '');
+			console.log(message);
 			this.messageService.addMessages(message)
-			.subscribe(
-					data => console.log(data),
-					error => console.error(error)
-				); 
+				.subscribe(
+				data => console.log(data),
+				error => console.error(error)
+				);
 			form.resetForm();
-		}		 
+		}
 	}
-	
+
 	//clear form 
 	onClear(form: NgForm) {
-		this.message = null; 
+		this.message = null;
 		form.resetForm();
 	}
 
-	ngOnInit(){
+	ngOnInit() {
 		this.messageService.messageIsEdit.subscribe(
 			(message: Message) => this.message = message
-		); 
+		);
 	}
 }

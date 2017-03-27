@@ -38,4 +38,10 @@ export class MessageComponent {
 			result => console.log(result)
 			);
 	}
+
+	//check on the backend against user changes 
+	//important validation 
+	belongsToUser() {
+		return localStorage.getItem('userId') == this.message.userId;
+	}
 }		
