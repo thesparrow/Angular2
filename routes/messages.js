@@ -63,7 +63,7 @@ router.post('/', function (req, res, next) {
 					error: err
 				});
 			}
-			user.messages.push(result); 
+			user.messages.push(result);
 			user.save(); //update to stack of messages 
 			//successful response 
 			res.status(201).json({
@@ -77,8 +77,7 @@ router.post('/', function (req, res, next) {
 
 //update existing messages in the storage 
 router.patch('/:id', function (req, res, next) {
-	//the id is passed as a parameter
-
+	var decoded = jwt.decode(req.query.token);
 	Message.findById(req.params.id, function (err, message) {
 		if (err) {
 			return res.status(500).json({
@@ -90,6 +89,13 @@ router.patch('/:id', function (req, res, next) {
 			return res.status(500).json({
 				title: 'Message was not updated.',
 				error: { message: "Message not found " }
+			});
+		}
+
+		if (message.user != decoded.use._id) {
+			return res.status(401).json({
+				title: 'Not authorized',
+				error: { message: 'User was not authorized to edit messagesß' }
 			});
 		}
 		message.content = req.body.content;
@@ -112,6 +118,7 @@ router.patch('/:id', function (req, res, next) {
 
 //DELETE resource based on id
 router.delete('/:id', function (req, res, next) {
+	var decoded = jwt.decode(req.query.token);
 	Message.findById(req.params.id, function (err, message) {
 		if (err) {
 			return res.status(500).json({
@@ -126,6 +133,13 @@ router.delete('/:id', function (req, res, next) {
 			});
 		}
 
+		if (message.user != decoded.user._id) {
+			return res.status(401).json({
+				title: 'Not authorized',
+				error: { message: 'User was not authorized to edit messagesß' }
+			});
+		}
+
 		message.remove(function (err, result) {
 			if (err) {
 				return res.status(500).json({
@@ -133,8 +147,12 @@ router.delete('/:id', function (req, res, next) {
 					error: err
 				});
 			}
-			user.messages.remove(result); 
-			user.save(); 
+			User.findById(decoded.user._id, function (err, user) {
+				user.messages.remove(result);
+				user.save();
+
+			});
+
 			res.status(200).json({
 				message: "Message has been removed",
 				obj: result
