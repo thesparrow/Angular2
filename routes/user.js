@@ -4,7 +4,7 @@ var bcrypty = require('bcryptjs');
 
 var User = require('../models/user');
 
-var jwt = require('jsonwebtoken'); 
+var jwt = require('jsonwebtoken');
 
 //Sign up user
 router.post('/', function (req, res, next) {
@@ -15,10 +15,22 @@ router.post('/', function (req, res, next) {
         password: bcrypty.hashSync(req.body.password, 10),
         email: req.body.email
     });
+
+    User.findOne({ 'email': user.email }, function (err, foundUser) {
+        if (foundUser !== null ) {
+            if (foundUser.email == user.email) {
+                return res.status(500).json({
+                    title: 'Sign up error',
+                    error: { message: 'Email already in use!' }
+                });
+            }
+        }
+    });
+
     user.save(function (err, result) {
         if (err) {
             return res.status(500).json({
-                title: 'An error occured',
+                title: 'Sign up error',
                 error: err
             });
         }
@@ -27,6 +39,7 @@ router.post('/', function (req, res, next) {
             obj: result
         });
     });
+
 });
 
 //Sign in user 
@@ -56,12 +69,12 @@ router.post('/signin', function (req, res, next) {
             }
         });
 
-        var token = jwt.sign({user: user}, 'secret', {expiresIn: 7200});
+        var token = jwt.sign({ user: user }, 'secret', { expiresIn: 7200 });
         res.status(200).json({
             message: 'Login successful',
             token: token,
             userId: user._id
-        })
+        });
     });
 });
 
