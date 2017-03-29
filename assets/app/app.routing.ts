@@ -1,13 +1,14 @@
 import { Routes, RouterModule} from "@angular/router";
+
 import { MessagesComponent } from "./messages/messages.component";
 import { AuthenticationComponent } from "./auth/authentication.component";
-import { AUTH_ROUTES } from "./auth/auth.routes";
 
 
-const APP_ROUTES: Routes = [ //array 
-	{ path: '', redirectTo: '/messages', pathMatch: 'full'}, //append to domain 
-	{ path: 'messages', component: MessagesComponent }, //javascript object 
-	{ path: 'auth', component: AuthenticationComponent, children: AUTH_ROUTES} //javascript object 
+
+const APP_ROUTES: Routes = [ 
+	{ path: '', redirectTo: '/messages', pathMatch: 'full'},
+	{ path: 'messages', component: MessagesComponent }, 
+	{ path: 'auth', component: AuthenticationComponent, loadChildren: './auth/auth.module#AuthModule'}
 ]; 
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

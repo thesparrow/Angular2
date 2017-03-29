@@ -33,7 +33,7 @@ export class MessageService {
 			: "";
 
 		//this sends an observable 
-		return this.http.post('http://localhost:3000/message/' + token, body, { headers: headers })
+		return this.http.post('http://https://git.heroku.com/angular2-message.git/message/' + token, body, { headers: headers })
 			.map((response: Response) => {
 				const result = response.json();
 				console.log(result);

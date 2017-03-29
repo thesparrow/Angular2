@@ -13,8 +13,8 @@ var messageRoutes = require('./routes/messages');
 var userRoutes = require('./routes/user');
 
 var app = express();
-mongoose.connect('localhost:27017/node-angular');
-
+//mongoose.connect('localhost:27017/node-angular');
+mongoose.connect('admin:password007@ds145370.mlab.com:45370/angular2-messanger');
 
 //seed db 
 
