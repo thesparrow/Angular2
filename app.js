@@ -16,15 +16,6 @@ var app = express();
 //mongoose.connect('localhost:27017/node-angular');
 mongoose.connect('admin:password007@ds145370.mlab.com:45370/angular2-messanger');
 
-//seed db 
-
-var user = new User({
-    firstName: 'Max',
-    lastName: 'Schwarz',
-    password: 'super-secret',
-    email: 'Max@gmail.com'
-});
-user.save();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -57,8 +48,5 @@ app.use('/', appRoutes);
 app.use(function (req, res, next) {
     return res.render('index');
 });
-
-
-
 
 module.exports = app;
