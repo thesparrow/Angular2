@@ -26,7 +26,7 @@ export class MessageService {
 		const body = JSON.stringify(message);
 
 		//include headers in this request 
-		const headers = new Headers({ 'Content-Type': 'application/json' });
+		const headers = new Headers({ 'Content-Type': 'text/plain' });
 
 		const token = localStorage.getItem('token')
 			? '?token=' + localStorage.getItem('token')

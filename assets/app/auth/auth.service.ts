@@ -12,10 +12,10 @@ export class AuthService {
 
     signup(user: User) {
         const body = JSON.stringify(user);
-        const headers = new Headers({ 'Content-Type': 'application/json' , 
-                            'Access-Control-Allow-Origin': '*',
+        const headers = new Headers({ 'Content-Type': 'text/plain' 
+                           /* , 'Access-Control-Allow-Origin': '*',
                             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-                            'Access-Control-Allow-Headers': 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token'});
+                            'Access-Control-Allow-Headers': 'x-requested-with, Content-Type, origin, authorization, accept, client-security-token'*/});
         return this.http.post('https://git.heroku.com/angular2-message.git/user', body, { headers: headers })
             .map((response: Response) => response.json())
             .catch((error: Response) => {
@@ -26,7 +26,7 @@ export class AuthService {
 
     signin(user: User) {
         const body = JSON.stringify(user);
-        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const headers = new Headers({ 'Content-Type': 'text/plain' });
         return this.http.post('https://git.heroku.com/angular2-message.git/user/signin', body, { headers: headers })
             .map((response: Response) => response.json())
             .catch((error: Response) => {
