@@ -33,7 +33,7 @@ export class MessageService {
 			: "";
 
 		//this sends an observable 
-		return this.http.post('https://git.heroku.com/messenger-angular2.git/message/' + token, body, { headers: headers })
+		return this.http.post('https://messenger-angular2.git/message/' + token, body, { headers: headers })
 			.map((response: Response) => {
 				const result = response.json();
 				console.log(result);
@@ -50,7 +50,7 @@ export class MessageService {
 	//reach out to the messages
 	//send from the server side to the http 
 	getMessages() {
-		return this.http.get('https://git.heroku.com/messenger-angular2.git/message')
+		return this.http.get('https://messenger-angular2.git/message')
 			.map((response: Response) => {
 				const messages = response.json().obj;
 				let transformedMessages: Message[] = [];
@@ -82,7 +82,7 @@ export class MessageService {
 			: "";
 
 
-		return this.http.patch('https://git.heroku.com/messenger-angular2.git/message/' + message.messageId + token, body, { headers: headers })
+		return this.http.patch('https://messenger-angular2.git/message/' + message.messageId + token, body, { headers: headers })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => {
 				this.errorService.handleError(error.json()); 
@@ -97,7 +97,7 @@ export class MessageService {
 			? '?token=' + localStorage.getItem('token')
 			: "";
 			
-		return this.http.delete('https://git.heroku.com/messenger-angular2.git/message/' + message.messageId + token)
+		return this.http.delete('https://messenger-angular2.git/message/' + message.messageId + token)
 			.map((response: Response) => response.json())
 			.catch((error: Response) => {
 				this.errorService.handleError(error.json()); 
